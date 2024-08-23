@@ -13,6 +13,19 @@ export default class App extends React.Component {
     ],
   }
 
+  addItem = (task) => {
+    this.setState(({ todoData }) => {
+      const newTask = {
+        task,
+        completed: false,
+        id: todoData.length ? todoData[todoData.length - 1].id + 1 : 1,
+      }
+      return {
+        todoData: [...todoData, newTask],
+      }
+    })
+  }
+
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
       const newArray = todoData.filter((item) => item.id !== id)
@@ -21,13 +34,16 @@ export default class App extends React.Component {
       }
     })
   }
+
   render() {
+    const activeTasksCount = this.state.todoData.filter((item) => !item.completed).length
+
     return (
       <main className="main todoapp">
         <section className="todoapp">
-          <NewTaskForm />
+          <NewTaskForm onItemAdded={this.addItem} />
           <TaskList todos={this.state.todoData} onDeleted={this.deleteItem} />
-          <Footer />
+          <Footer activeTasksCount={activeTasksCount} />
         </section>
       </main>
     )
