@@ -4,29 +4,33 @@ import Header from '../Header/Header'
 import TaskInput from '../TaskInput/TaskInput'
 import './NewTaskForm.css'
 
-const NewTaskForm = ({ onItemAdded }) => {
-  const [task, setTask] = React.useState('')
-
-  const onInputChange = (event) => {
-    setTask(event.target.value)
+export default class NewTaskForm extends React.Component {
+  state = {
+    task: '',
   }
 
-  const onKeyDown = (event) => {
+  onInputChange = (event) => {
+    this.setState({ task: event.target.value })
+  }
+
+  onKeyDown = (event) => {
+    const { task } = this.state
     if (event.key === 'Enter' && task.trim()) {
       event.preventDefault()
-      onItemAdded(task)
-      setTask('')
+      this.props.onItemAdded(task)
+      this.setState({ task: '' })
     }
   }
-  return (
-    <form className="header" onSubmit={(e) => e.preventDefault()}>
-      <Header />
-      <TaskInput value={task} onInputChange={onInputChange} onKeyDown={onKeyDown} />
-    </form>
-  )
-}
-NewTaskForm.propTypes = {
-  onItemAdded: PropTypes.func.isRequired,
-}
+  static propTypes = {
+    onItemAdded: PropTypes.func.isRequired,
+  }
 
-export default NewTaskForm
+  render() {
+    return (
+      <form className="header" onSubmit={(e) => e.preventDefault()}>
+        <Header />
+        <TaskInput value={this.state.task} onInputChange={this.onInputChange} onKeyDown={this.onKeyDown} />
+      </form>
+    )
+  }
+}
