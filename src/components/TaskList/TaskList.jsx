@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Task from '../Task/Task'
 import './TaskList.css'
 
-const TaskList = ({ todos, onDeleted, onToggleCompleted }) => {
+const TaskList = ({ todos, onDeleted, onToggleCompleted, onTaskUpdated }) => {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
 
@@ -13,6 +13,7 @@ const TaskList = ({ todos, onDeleted, onToggleCompleted }) => {
         {...itemProps}
         onDeleted={() => onDeleted(id)}
         onToggleCompleted={() => onToggleCompleted(id)}
+        onTaskUpdated={onTaskUpdated}
       />
     )
   })
@@ -21,6 +22,7 @@ const TaskList = ({ todos, onDeleted, onToggleCompleted }) => {
 TaskList.propTypes = {
   onDeleted: PropTypes.func.isRequired,
   onToggleCompleted: PropTypes.func.isRequired,
+  onTaskUpdated: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

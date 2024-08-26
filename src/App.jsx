@@ -73,6 +73,18 @@ export default class App extends React.Component {
     return todoData
   }
 
+  updateTask = (id, newTask) => {
+    this.setState(({ todoData }) => {
+      const updatedTasks = todoData.map((item) => {
+        if (item.id === id) {
+          return { ...item, task: newTask }
+        }
+        return item
+      })
+      return { todoData: updatedTasks }
+    })
+  }
+
   render() {
     const { filter } = this.state
     const filteredTasks = this.filterTasks()
@@ -82,7 +94,12 @@ export default class App extends React.Component {
       <main className="main todoapp">
         <section className="todoapp">
           <NewTaskForm onItemAdded={this.addItem} />
-          <TaskList todos={filteredTasks} onDeleted={this.deleteItem} onToggleCompleted={this.onToggleCompleted} />
+          <TaskList
+            todos={filteredTasks}
+            onDeleted={this.deleteItem}
+            onToggleCompleted={this.onToggleCompleted}
+            onTaskUpdated={this.updateTask}
+          />
           <Footer
             activeTasksCount={activeTasksCount}
             onClearCompleted={this.clearCompleted}
