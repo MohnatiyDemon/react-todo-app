@@ -11,6 +11,7 @@ export default class App extends React.Component {
       { task: 'Make awesome app', completed: false, id: 2, created: new Date() },
       { task: 'Have a lanch', completed: false, id: 3, created: new Date() },
     ],
+    filter: 'All',
   }
 
   addItem = (task) => {
@@ -57,19 +58,37 @@ export default class App extends React.Component {
     })
   }
 
+  setFilter = (filter) => {
+    this.setState({ filter })
+  }
+
+  filterTasks = () => {
+    const { todoData, filter } = this.state
+    if (filter === 'Active') {
+      return todoData.filter((task) => !task.completed)
+    }
+    if (filter === 'Completed') {
+      return todoData.filter((task) => task.completed)
+    }
+    return todoData
+  }
+
   render() {
+    const { filter } = this.state
+    const filteredTasks = this.filterTasks()
     const activeTasksCount = this.state.todoData.filter((item) => !item.completed).length
 
     return (
       <main className="main todoapp">
         <section className="todoapp">
           <NewTaskForm onItemAdded={this.addItem} />
-          <TaskList
-            todos={this.state.todoData}
-            onDeleted={this.deleteItem}
-            onToggleCompleted={this.onToggleCompleted}
+          <TaskList todos={filteredTasks} onDeleted={this.deleteItem} onToggleCompleted={this.onToggleCompleted} />
+          <Footer
+            activeTasksCount={activeTasksCount}
+            onClearCompleted={this.clearCompleted}
+            filter={filter}
+            onFilterChange={this.setFilter}
           />
-          <Footer activeTasksCount={activeTasksCount} onClearCompleted={this.clearCompleted} />
         </section>
       </main>
     )
