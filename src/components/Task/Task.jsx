@@ -57,16 +57,16 @@ export default class Task extends React.Component {
       <li className={classNames}>
         <div className="view">
           <input id={id} onChange={onToggleCompleted} className="toggle" type="checkbox" checked={completed} />
-          {!editing ? (
+          {!editing && (
             <label htmlFor={id}>
               <span className="description">{task}</span>
               <span className="created">{`created ${formatDistanceToNow(created, { addSuffix: true })}`}</span>
             </label>
-          ) : null}
+          )}
           <button type="button" className="icon icon-edit" onClick={this.onEditTask}></button>
           <button type="button" className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
-        {editing ? (
+        {editing && (
           <input
             type="text"
             className="edit"
@@ -74,7 +74,7 @@ export default class Task extends React.Component {
             onChange={this.onChangeTask}
             onKeyDown={this.onSubmitEdit}
           />
-        ) : null}
+        )}
       </li>
     )
   }

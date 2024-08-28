@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import './TaskFilter.css'
@@ -13,14 +14,18 @@ export default class TaskFilter extends React.Component {
     return (
       <ul className="filters">
         <li>
-          <button type="button" className={filter === 'All' ? 'selected' : ''} onClick={() => onFilterChange('All')}>
+          <button
+            type="button"
+            className={classNames({ selected: filter === 'All' })}
+            onClick={() => onFilterChange('All')}
+          >
             All
           </button>
         </li>
         <li>
           <button
             type="button"
-            className={filter === 'Active' ? 'selected' : ''}
+            className={classNames({ selected: filter === 'Active' })}
             onClick={() => onFilterChange('Active')}
           >
             Active
@@ -29,7 +34,7 @@ export default class TaskFilter extends React.Component {
         <li>
           <button
             type="button"
-            className={filter === 'Completed' ? 'selected' : ''}
+            className={classNames({ selected: filter === 'Completed' })}
             onClick={() => onFilterChange('Completed')}
           >
             Completed

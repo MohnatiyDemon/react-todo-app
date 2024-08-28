@@ -13,10 +13,11 @@ export default class NewTaskForm extends React.Component {
     this.setState({ task: event.target.value })
   }
 
-  onKeyDown = (event) => {
+  onSubmit = (event) => {
+    event.preventDefault()
     const { task } = this.state
-    if (event.key === 'Enter' && task.trim()) {
-      event.preventDefault()
+
+    if (task.trim()) {
       this.props.onItemAdded(task)
       this.setState({ task: '' })
     }
@@ -27,9 +28,9 @@ export default class NewTaskForm extends React.Component {
 
   render() {
     return (
-      <form className="header" onSubmit={(e) => e.preventDefault()}>
+      <form className="header" onSubmit={this.onSubmit}>
         <Header />
-        <TaskInput value={this.state.task} onInputChange={this.onInputChange} onKeyDown={this.onKeyDown} />
+        <TaskInput value={this.state.task} onInputChange={this.onInputChange} />
       </form>
     )
   }

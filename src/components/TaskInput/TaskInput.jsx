@@ -6,17 +6,19 @@ class TaskInput extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     onInputChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired,
   }
   render() {
-    const { value, onInputChange, onKeyDown } = this.props
+    const { value, onInputChange } = this.props
     return (
       <input
         className="new-todo"
+        name="text"
+        type="text"
         placeholder="What needs to be done?"
         value={value}
         onChange={onInputChange}
-        onKeyDown={onKeyDown}
+        required
+        minLength="1"
       ></input>
     )
   }
