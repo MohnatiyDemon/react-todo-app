@@ -5,10 +5,15 @@ import './TaskInput.css'
 class TaskInput extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    minutes: PropTypes.string,
+    seconds: PropTypes.string,
     onInputChange: PropTypes.func.isRequired,
+    onSecondsChange: PropTypes.func.isRequired,
+    onMinutesChange: PropTypes.func.isRequired,
   }
+
   render() {
-    const { value, onInputChange } = this.props
+    const { value, minutes, seconds, onInputChange, onSecondsChange, onMinutesChange } = this.props
     return (
       <>
         <input
@@ -21,8 +26,25 @@ class TaskInput extends React.Component {
           required
           minLength="1"
         ></input>
-        <input className="new-todo-form__timer" type="number" name="minutes" placeholder="Min" min="0"></input>
-        <input className="new-todo-form__timer" type="number" name="seconds" placeholder="Sec" min="0"></input>
+        <input
+          className="new-todo-form__timer"
+          type="number"
+          name="minutes"
+          value={minutes}
+          onChange={onMinutesChange}
+          placeholder="Min"
+          min="0"
+        ></input>
+        <input
+          className="new-todo-form__timer"
+          type="number"
+          name="seconds"
+          value={seconds}
+          onChange={onSecondsChange}
+          placeholder="Sec"
+          min="0"
+        ></input>
+        <button type="submit"></button>
       </>
     )
   }

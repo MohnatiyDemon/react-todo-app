@@ -7,24 +7,109 @@ import TaskList from './components/TaskList/TaskList'
 export default class App extends React.Component {
   state = {
     todoData: [
-      { task: 'Drink coffee', completed: false, id: 1, created: new Date() },
-      { task: 'Make awesome app', completed: false, id: 2, created: new Date() },
-      { task: 'Have a lanch', completed: false, id: 3, created: new Date() },
+      {
+        task: 'Drink coffee',
+        completed: false,
+        id: 1,
+        created: new Date(),
+        timer: 0,
+        isRunning: false,
+        isPaused: false,
+      },
+      {
+        task: 'Make awesome app',
+        completed: false,
+        id: 2,
+        created: new Date(),
+        timer: 0,
+        isRunning: false,
+        isPaused: false,
+      },
+      {
+        task: 'Have a lunch',
+        completed: false,
+        id: 3,
+        created: new Date(),
+        timer: 0,
+        isRunning: false,
+        isPaused: false,
+      },
     ],
     filter: 'All',
   }
 
-  addItem = (task) => {
+  addItem = (task, minutes, seconds) => {
+    const totalSeconds = (parseInt(minutes, 10) || 0) * 60 + (parseInt(seconds, 10) || 0)
     this.setState(({ todoData }) => {
       const newTask = {
         task,
         completed: false,
         id: todoData.length ? todoData[todoData.length - 1].id + 1 : 1,
         created: new Date(),
+        timer: totalSeconds,
+        isRunning: false,
+        isPaused: false,
       }
       return {
         todoData: [...todoData, newTask],
       }
+    })
+  }
+
+  updateTaskTimer = (id, time) => {
+    this.setState(({ todoData }) => {
+      const updatedTasks = todoData.map((item) => {
+        if (item.id === id) {
+          return { ...item, timer: time }
+        }
+        return item
+      })
+      return { todoData: updatedTasks }
+    })
+  }
+
+  startTimer = (id) => {
+    this.setState(({ todoData }) => {
+      const updatedTasks = todoData.map((item) => {
+        if (item.id === id && !item.isRunning && item.timer > 0) {
+          item.isRunning = true
+          item.isPaused = false
+
+          item.intervalId = setInterval(() => {
+            this.setState(({ todoData }) => {
+              const task = todoData.find((t) => t.id === id)
+              if (task.timer > 0) {
+                const updatedTime = task.timer - 1
+                localStorage.setItem(`timer-${id}`, updatedTime)
+                return {
+                  todoData: todoData.map((t) => (t.id === id ? { ...t, timer: updatedTime } : t)),
+                }
+              } else {
+                clearInterval(task.intervalId)
+                return {
+                  todoData: todoData.map((t) => (t.id === id ? { ...t, isRunning: false } : t)),
+                }
+              }
+            })
+          }, 1000)
+        }
+        return item
+      })
+      return { todoData: updatedTasks }
+    })
+  }
+
+  pauseTimer = (id) => {
+    this.setState(({ todoData }) => {
+      const updatedTasks = todoData.map((item) => {
+        if (item.id === id && item.isRunning) {
+          clearInterval(item.intervalId)
+          item.isRunning = false
+          item.isPaused = true
+        }
+        return item
+      })
+      return { todoData: updatedTasks }
     })
   }
 
@@ -98,6 +183,8 @@ export default class App extends React.Component {
             todos={filteredTasks}
             onDeleted={this.deleteItem}
             onToggleCompleted={this.onToggleCompleted}
+            onStartTimer={this.startTimer}
+            onPauseTimer={this.pauseTimer}
             onTaskUpdated={this.updateTask}
           />
           <Footer

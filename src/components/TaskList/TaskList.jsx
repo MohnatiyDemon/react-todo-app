@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Task from '../Task/Task'
 import './TaskList.css'
 
-const TaskList = ({ todos, onDeleted, onToggleCompleted, onTaskUpdated }) => {
+const TaskList = ({ todos, onDeleted, onToggleCompleted, onTaskUpdated, onStartTimer, onPauseTimer }) => {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
 
@@ -14,6 +14,8 @@ const TaskList = ({ todos, onDeleted, onToggleCompleted, onTaskUpdated }) => {
         onDeleted={() => onDeleted(id)}
         onToggleCompleted={() => onToggleCompleted(id)}
         onTaskUpdated={onTaskUpdated}
+        onStartTimer={onStartTimer}
+        onPauseTimer={onPauseTimer}
       />
     )
   })
@@ -28,7 +30,10 @@ TaskList.propTypes = {
       id: PropTypes.number.isRequired,
       task: PropTypes.string.isRequired,
       completed: PropTypes.bool,
+      timer: PropTypes.number,
     })
   ).isRequired,
+  onStartTimer: PropTypes.func.isRequired,
+  onPauseTimer: PropTypes.func.isRequired,
 }
 export default TaskList

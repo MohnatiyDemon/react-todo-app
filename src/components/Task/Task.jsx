@@ -31,6 +31,12 @@ export default class Task extends React.Component {
   onTaskClick = () => {
     this.props.onToggleCompleted(this.props.id)
   }
+
+  formatTime = (time) => {
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }
   static propTypes = {
     id: PropTypes.number.isRequired,
     task: PropTypes.string.isRequired,
@@ -39,13 +45,22 @@ export default class Task extends React.Component {
     created: PropTypes.instanceOf(Date).isRequired,
     onDeleted: PropTypes.func.isRequired,
     onTaskUpdated: PropTypes.func.isRequired,
+    timer: PropTypes.number,
+    isRunning: PropTypes.bool,
+    isPaused: PropTypes.bool,
+    onStartTimer: PropTypes.func.isRequired,
+    onPauseTimer: PropTypes.func.isRequired,
   }
   static defaultProps = {
     completed: false,
+    timer: 0,
+    isRunning: false,
+    isPaused: false,
   }
 
   render() {
-    const { task, id, created, completed, onDeleted, onToggleCompleted } = this.props
+    const { task, id, created, completed, onDeleted, onToggleCompleted, timer, isRunning, onStartTimer, onPauseTimer } =
+      this.props
     const { editing, editingTask } = this.state
 
     let classNames = completed ? 'completed' : ''
@@ -61,9 +76,12 @@ export default class Task extends React.Component {
             <label htmlFor={id}>
               <span className="description">
                 <span>{task}</span>
-                <button className="icon icon-play"></button>
-                <button className="icon icon-pause"></button>
-                <span>02:00</span>
+                {!isRunning ? (
+                  <button className="icon icon-play" onClick={() => onStartTimer(id)}></button>
+                ) : (
+                  <button className="icon icon-pause" onClick={() => onPauseTimer(id)}></button>
+                )}
+                <span>{this.formatTime(timer)}</span>
               </span>
               <span className="created">{`created ${formatDistanceToNow(created, { addSuffix: true })}`}</span>
             </label>
