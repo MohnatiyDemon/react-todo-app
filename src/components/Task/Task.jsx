@@ -59,7 +59,12 @@ export default class Task extends React.Component {
           <input id={id} onChange={onToggleCompleted} className="toggle" type="checkbox" checked={completed} />
           {!editing && (
             <label htmlFor={id}>
-              <span className="description">{task}</span>
+              <span className="description">
+                <span>{task}</span>
+                <button className="icon icon-play"></button>
+                <button className="icon icon-pause"></button>
+                <span>02:00</span>
+              </span>
               <span className="created">{`created ${formatDistanceToNow(created, { addSuffix: true })}`}</span>
             </label>
           )}

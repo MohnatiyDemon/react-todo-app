@@ -1,0 +1,44 @@
+.icon {
+  width: 30px;
+  height: 40px;
+  font-size: 34px;
+  color: #cc9a9a;
+  margin: auto 0;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
+}
+.icon:hover {
+  color: #af5b5e;
+}
+.icon-pause,
+.icon-play {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.icon-play {
+  font-size: 15px;
+}
+
+.icon-pause:after {
+  content: '⏸';
+  position: absolute;
+  left: 280px;
+  top: -5px;
+}
+
+.icon-play:after {
+  content: '▶';
+  position: absolute;
+  left: 240px;
+  top: 0px;
+}
+.description {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  width: 400px;
+}

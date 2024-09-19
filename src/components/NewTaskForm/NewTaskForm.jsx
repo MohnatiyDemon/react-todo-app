@@ -28,7 +28,7 @@ export default class NewTaskForm extends React.Component {
 
   render() {
     return (
-      <form className="header" onSubmit={this.onSubmit}>
+      <form className="header new-todo-form" onSubmit={this.onSubmit}>
         <Header />
         <TaskInput value={this.state.task} onInputChange={this.onInputChange} />
       </form>
