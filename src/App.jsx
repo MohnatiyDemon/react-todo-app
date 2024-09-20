@@ -115,6 +115,10 @@ export default class App extends React.Component {
 
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
+      const taskToDelete = todoData.find((item) => item.id === id)
+      if (taskToDelete && taskToDelete.isRunning) {
+        clearInterval(taskToDelete.intervalId)
+      }
       const newArray = todoData.filter((item) => item.id !== id)
       return {
         todoData: newArray,
