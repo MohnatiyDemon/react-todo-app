@@ -1,60 +1,57 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import { useState } from 'react'
 import Header from '../Header/Header'
 import TaskInput from '../TaskInput/TaskInput'
 import './NewTaskForm.css'
 
-export default class NewTaskForm extends React.Component {
-  state = {
-    task: '',
-    minutes: '',
-    seconds: '',
+const NewTaskForm = ({ onItemAdded }) => {
+  const [task, setTask] = useState('')
+  const [minutes, setMinutes] = useState('')
+  const [seconds, setSeconds] = useState('')
+
+  const onInputChange = (event) => {
+    setTask(event.target.value)
   }
 
-  onInputChange = (event) => {
-    this.setState({ task: event.target.value })
-  }
-
-  onMinutesChange = (e) => {
+  const onMinutesChange = (e) => {
     const value = e.target.value
-    this.setState({ minutes: value === '' ? 0 : value })
+    setMinutes(value === '' ? 0 : value)
   }
 
-  onSecondsChange = (e) => {
+  const onSecondsChange = (e) => {
     const value = e.target.value
-    this.setState({ seconds: value === '' ? 0 : value })
+    setSeconds(value === '' ? 0 : value)
   }
 
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
-    const { task, minutes, seconds } = this.state
-
     if (!task.trim()) {
       return
     }
-    this.props.onItemAdded(task, minutes, seconds)
-    this.setState({ task: '', minutes: '', seconds: '' })
+    onItemAdded(task, minutes, seconds)
+    setTask('')
+    setMinutes('')
+    setSeconds('')
   }
 
-  static propTypes = {
-    onItemAdded: PropTypes.func.isRequired,
-  }
-
-  render() {
-    const { task, minutes, seconds } = this.state
-    return (
-      <form className="header new-todo-form" onSubmit={this.onSubmit}>
-        <Header />
-        <TaskInput
-          value={task}
-          minutes={minutes}
-          seconds={seconds}
-          onInputChange={this.onInputChange}
-          onMinutesChange={this.onMinutesChange}
-          onSecondsChange={this.onSecondsChange}
-        />
-        <button type="submit"></button>
-      </form>
-    )
-  }
+  return (
+    <form className="header new-todo-form" onSubmit={onSubmit}>
+      <Header />
+      <TaskInput
+        value={task}
+        minutes={minutes}
+        seconds={seconds}
+        onInputChange={onInputChange}
+        onMinutesChange={onMinutesChange}
+        onSecondsChange={onSecondsChange}
+      />
+      <button type="submit"></button>
+    </form>
+  )
 }
+
+NewTaskForm.propTypes = {
+  onItemAdded: PropTypes.func.isRequired,
+}
+
+export default NewTaskForm
